@@ -1,0 +1,70 @@
+git init //初始化git仓库
+git add  //把文件添加到暂存区 (可添加多个文件)
+git commit -m "备注" //提交文件更改到仓库
+git status //查看当前仓库状态
+git diff //查看修改内容 (后面加文件名)
+git log //显示提交日志 (--pretty=oneline 参数可以列出简洁信息)
+git reflog //查看命令历史
+git reset //回到以前的版本(--hard HEAD^ 表示回到上一个版本 --hard HEAD~100 回到上100个版本 --hard 版本号id 回到具体版本) 
+git checkout //撤销修改 (后面加文件名字,如果文件以add到暂存区，先执行reset head 再执行checkout)
+/*
+*  在windows下 用"HEAD^" 
+个人总结：
+对于文件 myfile.txt
+
+① 修改后 未add（添加到暂存区） 需要撤销修改时：
+        git checkout -- myfile.txt 或 手动删除工作区修改
+        工作区 ： clean  暂存区： clean
+② 修改后 add了（未commit） 再次修改文件  要撤销第二次修改时：
+        git checkout -- myfile.txt (将暂存区恢复到工作区)
+        暂存区有第一次的修改需要commit
+③ 修改后 add了（未commit），需要撤销修改时：
+        git reset HEAD myfile.txt (将暂存区修改删除)
+        此时工作区的修改还未撤销
+        git checkout -- myfile.txt (撤销工作区修改)
+④ 修改后 add并commit了，需要撤销修改时：
+        git reset --hard HEAD^  (版本回退)**
+ */
+
+分支管理
+git branch //查看分支
+git branch <branch-name> //创建分支
+git checkout <branch-name> //切换分支
+git checkout -b <branch-name> //创建+切换分支
+git merge <branch-name> //合并分支 fast forward 模式
+git merge --no-ff -m "remark" <name> /--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
+git branch -d <branch-name> //删除分支
+解决分支冲突
+<<<<<<< HEAD
+你的修改
+=======
+别人的修改
+>>>>>>> 
+master分支一般为发布的版本
+
+git stash //保存工作现场
+git branch -D <branch-name> //强行删除
+
+标签管理
+git tag //查看所有标签
+git tag <tag-name> //创建标签   默认为HEAD，也可以指定一个commit id
+git tag -a <tag-name> -m "remake" //指定标签信息
+git tag -s <tag-name> -m "remake" //用PGP签名标签
+git show <tag-name> //查看标签信息
+git tag -d <tag-name> //删除一个标签
+
+远程库命令
+ssh-keygen -t rsa -C "youremail@example.com" //Git Bash ，创建SSH Key
+
+git remote //查看远程库信息 -v 显示详细信息
+git push origin master //推送主分支
+git push origin <branch-name> //推送其他分支
+git push -u origin master //第一次推送master分支的所有内容
+git remote add origin git@server-name:path/repo-name.git //关联一个远程库
+git clone 仓库地址 //从远程仓库克隆到本地
+git checkout -b <branch-name> origin/branch-name //在本地创建和远程分支对应的分支
+git branch --set-upstream <branch-name> origin/<branch-name> //建立本地分支和远程分支的关联
+git pull // 从远程抓取分支
+git push origin <tag-name> //推送一个本地标签
+git push origin --tags //推送全部未推送过的本地标签；
+git push origin :refs/tags/<tag-name> //删除一个远程标签。
