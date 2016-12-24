@@ -1,4 +1,4 @@
-git init //初始化git仓库
+﻿git init //初始化git仓库
 git add  //把文件添加到暂存区 (可添加多个文件)
 git commit -m "备注" //提交文件更改到仓库
 git status //查看当前仓库状态
@@ -7,24 +7,6 @@ git log //显示提交日志 (--pretty=oneline 参数可以列出简洁信息)
 git reflog //查看命令历史
 git reset //回到以前的版本(--hard HEAD^ 表示回到上一个版本 --hard HEAD~100 回到上100个版本 --hard 版本号id 回到具体版本) 
 git checkout //撤销修改 (后面加文件名字,如果文件以add到暂存区，先执行reset head 再执行checkout)
-/*
-*  在windows下 用"HEAD^" 
-个人总结：
-对于文件 myfile.txt
-
-① 修改后 未add（添加到暂存区） 需要撤销修改时：
-        git checkout -- myfile.txt 或 手动删除工作区修改
-        工作区 ： clean  暂存区： clean
-② 修改后 add了（未commit） 再次修改文件  要撤销第二次修改时：
-        git checkout -- myfile.txt (将暂存区恢复到工作区)
-        暂存区有第一次的修改需要commit
-③ 修改后 add了（未commit），需要撤销修改时：
-        git reset HEAD myfile.txt (将暂存区修改删除)
-        此时工作区的修改还未撤销
-        git checkout -- myfile.txt (撤销工作区修改)
-④ 修改后 add并commit了，需要撤销修改时：
-        git reset --hard HEAD^  (版本回退)**
- */
 
 分支管理
 git branch //查看分支
@@ -34,14 +16,6 @@ git checkout -b <branch-name> //创建+切换分支
 git merge <branch-name> //合并分支 fast forward 模式
 git merge --no-ff -m "remark" <name> /--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
 git branch -d <branch-name> //删除分支
-解决分支冲突
-<<<<<<< HEAD
-你的修改
-=======
-别人的修改
->>>>>>> 
-master分支一般为发布的版本
-
 git stash //保存工作现场
 git branch -D <branch-name> //强行删除
 
@@ -68,3 +42,41 @@ git pull // 从远程抓取分支
 git push origin <tag-name> //推送一个本地标签
 git push origin --tags //推送全部未推送过的本地标签；
 git push origin :refs/tags/<tag-name> //删除一个远程标签。
+
+
+解决分支冲突
+<<<<<<< HEAD
+你的修改
+=======
+别人的修改
+>>>>>>> 
+master分支一般为发布的版本
+
+/**  在windows下 用"HEAD^" 
+个人总结：
+对于文件 myfile.txt
+
+① 修改后 未add（添加到暂存区） 需要撤销修改时：
+        git checkout -- myfile.txt 或 手动删除工作区修改
+        工作区 ： clean  暂存区： clean
+② 修改后 add了（未commit） 再次修改文件  要撤销第二次修改时：
+        git checkout -- myfile.txt (将暂存区恢复到工作区)
+        暂存区有第一次的修改需要commit
+③ 修改后 add了（未commit），需要撤销修改时：
+        git reset HEAD myfile.txt (将暂存区修改删除)
+        此时工作区的修改还未撤销
+        git checkout -- myfile.txt (撤销工作区修改)
+④ 修改后 add并commit了，需要撤销修改时：
+        git reset --hard HEAD^  (版本回退)**
+*/
+
+多个用户git协作权限问题
+1，将多个用户设置成同一个组
+
+2，将git设置成多个用户组可操作
+
+3，修改.gitconfig文件
+
+.gitconfig 新增 
+[core]
+sharedRepository = 1
